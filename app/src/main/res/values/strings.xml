@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">ONE</string>
+    <string name="title_home">首页</string>
+    <string name="title_article">文章</string>
+    <string name="title_question">问题</string>
+    <string name="one_text">永远相信美好的事情即将发生。 by 小米</string>
+    <string name="one_date">1900 / 01 / 01</string>
+    <string name="one_vol">VOL.0</string>
+    <string name="picture_author">摄影 | 李继鹏</string>
+    <string name="date_day">01</string>
+    <string name="date_month_and_year">Jan.1900</string>
+</resources>
