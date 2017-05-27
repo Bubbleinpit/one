@@ -79,4 +79,11 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
         }
         return false;
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        isDataRequested = false;    //如果没有这句，会造成如果fragment被销毁，那么下次创建时，不会从服务器去读取数据
+        isViewInitiated = false;
+    }
 }

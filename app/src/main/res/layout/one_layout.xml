@@ -100,7 +100,9 @@
                 android:layout_weight="1"
                 android:text="@string/one_text"
                 app:bb_arrowTo="@id/date_day"
-                app:bb_fillColor="@color/colorPrimary" />
+                app:bb_fillColor="@color/colorPrimary"
+                android:minHeight="74dp"
+                android:gravity="center_vertical"/>
 
         </LinearLayout>
     </RelativeLayout>
