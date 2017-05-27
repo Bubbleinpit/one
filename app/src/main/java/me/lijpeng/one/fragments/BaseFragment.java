@@ -48,17 +48,6 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
     protected abstract void getDataFromServer();
 
     /**
-     * 当前页面是否展示
-     * @param isVisibleToUser 显示为true， 不显示为false
-     */
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        this.isVisibleToUser = isVisibleToUser;
-        prepareGetData();
-    }
-
-    /**
      * 如果只想第一次进入该页面请求数据，return prepareGetData(false)
      * 如果想每次进入该页面就请求数据，return prepareGetData(true)
      */

@@ -3,14 +3,22 @@ package me.lijpeng.one.fragments;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.View;
 import android.view.animation.Animation;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import me.lijpeng.one.R;
+import me.lijpeng.one.util.ArticleDetailResponse;
+import me.lijpeng.one.util.OneContent;
 
 import static me.lijpeng.one.MainActivity.client;
 
@@ -20,12 +28,12 @@ import static me.lijpeng.one.MainActivity.client;
 
 public class FragmentArticle extends BaseFragment {
     private SwipeRefreshLayout mSwipeLayout;
-    private ScrollView mScrollView;
+    private WebView mWebView;
 
     @Override
     protected void initView() {
         mSwipeLayout = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_article_container);
-        mScrollView = (ScrollView) mView.findViewById(R.id.scroll_article_container);
+        mWebView = (WebView) mView.findViewById(R.id.articleWebView);
         mSwipeLayout.setOnRefreshListener(this);
         mSwipeLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeLayout.setRefreshing(true);
@@ -33,7 +41,7 @@ public class FragmentArticle extends BaseFragment {
 
             @Override
             public void onAnimationStart(Animation animation) {
-                mScrollView.setAlpha(1);    //不在动画执行前设置为不透明，就看不见动画的渐变过程（一直全透明）
+                mWebView.setAlpha(1);    //不在动画执行前设置为不透明，就看不见动画的渐变过程（一直全透明）
             }
 
             @Override
@@ -49,7 +57,7 @@ public class FragmentArticle extends BaseFragment {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                mScrollView.setAlpha(0);
+                mWebView.setAlpha(0);
             }   //为了保证动画执行完后界面的确透明了
 
             @Override
@@ -61,13 +69,39 @@ public class FragmentArticle extends BaseFragment {
     public int getLayoutId() {
         return R.layout.article_layout;
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        this.isVisibleToUser = isVisibleToUser;
+        this.isVisibleToUser = isVisibleToUser;
+        if (mSwipeLayout != null) {
+            if (!isVisibleToUser) {
+                mSwipeLayout.setEnabled(false);
+                /*
+                TO_DO: make the webview invisible
+                 */
+                return;
+            } else {
+                mSwipeLayout.setEnabled(true);
+                /*
+                TO_DO: make the webview visible
+                 */
+            }
+        }
+        prepareGetData(false);
+    }
+
     @Override
     protected void getDataFromServer() {
+        if (!mSwipeLayout.isRefreshing()) {
+            mSwipeLayout.setRefreshing(true);
+        }
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 Request getArticle = new Request.Builder()
-                        .url("http://v3.wufazhuce.com:8000/api/essay/2433")
+                        .url("http://v3.wufazhuce.com:8000/api/essay/1720?version=4.2.2")
                         .get()
                         .build();
                 Response response;
@@ -80,7 +114,12 @@ public class FragmentArticle extends BaseFragment {
                     finishLoadForError.sendMessage(new Message());
                     return;
                 }
-                System.out.println(result);
+                Gson gson = new Gson();
+                ArticleDetailResponse articleDetail = gson.fromJson(result, ArticleDetailResponse.class);
+
+                Message msg = new Message();
+                msg.obj = articleDetail.getData().getHp_content();
+                setArticleUiHandler.sendMessage(msg);
             }
         });
         t.start();
@@ -91,11 +130,24 @@ public class FragmentArticle extends BaseFragment {
 
     }
 
+    Handler setArticleUiHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            String htmlContent = (String) msg.obj;
+            mWebView.loadData(htmlContent, "text/html; charset=UTF-8", null);
+            mWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+            mWebView.getSettings().setJavaScriptEnabled(true);
+            mSwipeLayout.setRefreshing(false);
+            mWebView.startAnimation(appearAnimation);
+        }
+    };
+
     Handler finishLoadForError = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             mSwipeLayout.setRefreshing(false);
-            mScrollView.startAnimation(appearAnimation);
+            mWebView.startAnimation(appearAnimation);
             Toast.makeText(getActivity(),"网络错误",Toast.LENGTH_SHORT).show();
         }
     };

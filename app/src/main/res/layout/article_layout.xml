@@ -4,17 +4,9 @@
     android:id="@+id/swipe_article_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <ScrollView
-        android:id="@+id/scroll_article_container"
+    <WebView
+        android:id="@+id/articleWebView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="0">
-        <RelativeLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="20dp"
-            android:id="@+id/article_container">
-        </RelativeLayout>
-    </ScrollView>
+        android:layout_height="wrap_content"
+        android:alpha="0"></WebView>
 </android.support.v4.widget.SwipeRefreshLayout>

@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -67,8 +68,29 @@ public class FragmentOne extends BaseFragment {
     public int getLayoutId() {
         return R.layout.one_layout;
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        this.isVisibleToUser = isVisibleToUser;
+        if (mSwipeLayout != null) {
+            if (!isVisibleToUser) {
+                mSwipeLayout.setEnabled(false);
+                mScrollView.setVisibility(View.INVISIBLE);
+                return;
+            } else {
+                mSwipeLayout.setEnabled(true);
+                mScrollView.setVisibility(View.VISIBLE);
+            }
+        }
+        prepareGetData(false);
+    }
+
     @Override
     protected void getDataFromServer() {
+        if (!mSwipeLayout.isRefreshing()) {
+            mSwipeLayout.setRefreshing(true);
+        }
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -181,6 +203,9 @@ public class FragmentOne extends BaseFragment {
     @Override
     public void onRefresh() {
         mScrollView.startAnimation(disappearAnimation);
-        getDataFromServer();
+        if (!prepareGetData(true)) {
+            mSwipeLayout.setRefreshing(false);
+            mScrollView.startAnimation(appearAnimation);
+        }   //获取失败得让界面显示回来
     }
 }

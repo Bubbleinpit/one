@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-            articleContainer = findViewById(R.id.article_container);
+            articleContainer = findViewById(R.id.swipe_article_container);
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     if (mViewPager.getCurrentItem() == 2)
@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         };
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOffscreenPageLimit(2); //预加载剩下两页
-        articleContainer = findViewById(R.id.article_container);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
