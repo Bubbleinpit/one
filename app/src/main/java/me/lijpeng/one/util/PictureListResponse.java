@@ -6,7 +6,7 @@ import java.util.List;
  * Created by ljp on 2017/5/26.
  */
 
-public class PictureList {
+public class PictureListResponse {
     private String res;
     private List<String> data;
 

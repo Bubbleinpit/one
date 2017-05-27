@@ -87,7 +87,7 @@ public class FragmentOne extends BaseFragment {
                     return;
                 }
                 Gson gson = new Gson();
-                PictureList pictureList = gson.fromJson(result, PictureList.class);
+                PictureListResponse pictureList = gson.fromJson(result, PictureListResponse.class);
                 String pictureId = pictureList.getData().get(0);
                 Request getPictureDetail = new Request.Builder()
                         .url("http://v3.wufazhuce.com:8000/api/hp/detail/" + pictureId)
@@ -102,8 +102,8 @@ public class FragmentOne extends BaseFragment {
                     return;
                 }
                 gson = new Gson();
-                PictureDetail pictureDetail = gson.fromJson(result, PictureDetail.class);
-                PictureDataInDetail pictureInfo = pictureDetail.getData();
+                PictureDetailResponse pictureDetail = gson.fromJson(result, PictureDetailResponse.class);
+                PictureDataInDetailResponse pictureInfo = pictureDetail.getData();
                 String pictureAuthor = pictureInfo.getHp_author();
                 String oneText = pictureInfo.getHp_content();
                 String pictureUrl = pictureInfo.getHp_img_original_url();

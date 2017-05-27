@@ -4,9 +4,9 @@ package me.lijpeng.one.util;
  * Created by ljp on 2017/5/26.
  */
 
-public class PictureDetail {
+public class PictureDetailResponse {
     private String res;
-    private PictureDataInDetail data;
+    private PictureDataInDetailResponse data;
 
     public String getRes() {
         return res;
@@ -16,11 +16,11 @@ public class PictureDetail {
         this.res = res;
     }
 
-    public PictureDataInDetail getData() {
+    public PictureDataInDetailResponse getData() {
         return data;
     }
 
-    public void setData(PictureDataInDetail data) {
+    public void setData(PictureDataInDetailResponse data) {
         this.data = data;
     }
 }

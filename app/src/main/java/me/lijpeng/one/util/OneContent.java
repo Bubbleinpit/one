@@ -3,7 +3,7 @@ package me.lijpeng.one.util;
 import android.graphics.Bitmap;
 
 /**
- * Created by 李计芃 on 2017/5/26.
+ * Created by ljp on 2017/5/26.
  */
 
 public class OneContent {
