@@ -1,4 +1,4 @@
-package me.lijpeng.one.thirdparty.viewpager;
+package me.lijpeng.one.viewpager;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;

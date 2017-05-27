@@ -13,8 +13,8 @@ import android.view.View;
 import com.squareup.okhttp.OkHttpClient;
 
 import me.lijpeng.one.fragments.*;
-import me.lijpeng.one.thirdparty.viewpager.NoSlidingPageTransformer;
-import me.lijpeng.one.thirdparty.viewpager.NoSlidingViewPaper;
+import me.lijpeng.one.viewpager.NoSlidingPageTransformer;
+import me.lijpeng.one.viewpager.NoSlidingViewPaper;
 
 import java.util.ArrayList;
 

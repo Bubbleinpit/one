@@ -30,7 +30,7 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <me.lijpeng.one.thirdparty.viewpager.NoSlidingViewPaper
+        <me.lijpeng.one.viewpager.NoSlidingViewPaper
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
