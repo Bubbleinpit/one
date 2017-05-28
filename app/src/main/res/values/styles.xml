@@ -24,4 +24,9 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="MyProgressBar" parent="Base.Widget.AppCompat.ProgressBar">
+        <item name="android:indeterminateTint">@color/colorPrimary</item>
+        <item name="android:indeterminateTintMode">src_atop</item>
+    </style>
+
 </resources>

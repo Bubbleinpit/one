@@ -4,9 +4,20 @@
     android:id="@+id/swipe_article_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <WebView
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <WebView
         android:id="@+id/articleWebView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:alpha="0"></WebView>
+        android:alpha="0"/>
+        <ProgressBar
+            android:id="@+id/webViewLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            style="@style/MyProgressBar"
+            android:visibility="gone"/>
+    </FrameLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

@@ -1,5 +1,6 @@
 package me.lijpeng.one.fragments;
 
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -7,7 +8,9 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,14 +32,29 @@ import static me.lijpeng.one.MainActivity.client;
 public class FragmentArticle extends BaseFragment {
     private SwipeRefreshLayout mSwipeLayout;
     private WebView mWebView;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void initView() {
         mSwipeLayout = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_article_container);
         mWebView = (WebView) mView.findViewById(R.id.articleWebView);
+        mProgressBar = (ProgressBar) mView.findViewById(R.id.webViewLoading);
         mSwipeLayout.setOnRefreshListener(this);
         mSwipeLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeLayout.setRefreshing(true);
+        mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                mProgressBar.setVisibility(View.VISIBLE);//显示进度条
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                mProgressBar.setVisibility(View.INVISIBLE);//显示webView
+            }
+        });
         appearAnimation.setAnimationListener(new Animation.AnimationListener(){
 
             @Override
@@ -123,6 +141,11 @@ public class FragmentArticle extends BaseFragment {
 
     @Override
     public void onRefresh() {
+        mWebView.startAnimation(disappearAnimation);
+        if (!prepareGetData(true)) {
+            mSwipeLayout.setRefreshing(false);
+            mWebView.startAnimation(appearAnimation);
+        }   //获取失败得让界面显示回来
 
     }
 
