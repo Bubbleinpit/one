@@ -78,15 +78,11 @@ public class FragmentArticle extends BaseFragment {
         if (mSwipeLayout != null) {
             if (!isVisibleToUser) {
                 mSwipeLayout.setEnabled(false);
-                /*
-                TO_DO: make the webview invisible
-                 */
+                mWebView.setVisibility(View.INVISIBLE);
                 return;
             } else {
                 mSwipeLayout.setEnabled(true);
-                /*
-                TO_DO: make the webview visible
-                 */
+                mWebView.setVisibility(View.VISIBLE);
             }
         }
         prepareGetData(false);
