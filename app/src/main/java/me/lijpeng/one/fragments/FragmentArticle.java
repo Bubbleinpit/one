@@ -9,10 +9,7 @@ import android.view.animation.Animation;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -21,7 +18,6 @@ import com.squareup.okhttp.Response;
 
 import me.lijpeng.one.R;
 import me.lijpeng.one.util.ArticleDetailResponse;
-import me.lijpeng.one.util.OneContent;
 
 import static me.lijpeng.one.MainActivity.client;
 
@@ -95,12 +91,12 @@ public class FragmentArticle extends BaseFragment {
         this.isVisibleToUser = isVisibleToUser;
         if (mSwipeLayout != null) {
             if (!isVisibleToUser) {
-                mSwipeLayout.setEnabled(false);
-                mWebView.setVisibility(View.INVISIBLE);
+                //mSwipeLayout.setEnabled(false);
+                //mWebView.setVisibility(View.INVISIBLE);
                 return;
             } else {
-                mSwipeLayout.setEnabled(true);
-                mWebView.setVisibility(View.VISIBLE);
+                //mSwipeLayout.setEnabled(true);
+                //mWebView.setVisibility(View.VISIBLE);
             }
         }
         prepareGetData(false);

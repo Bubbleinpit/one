@@ -4,6 +4,11 @@
     android:id="@+id/swipe_article_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <ScrollView
+        android:id="@+id/scroll_article_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:descendantFocusability="blocksDescendants">
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -20,4 +25,5 @@
             style="@style/MyProgressBar"
             android:visibility="gone"/>
     </FrameLayout>
+    </ScrollView>
 </android.support.v4.widget.SwipeRefreshLayout>

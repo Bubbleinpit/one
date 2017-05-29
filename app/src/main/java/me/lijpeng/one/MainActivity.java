@@ -12,11 +12,13 @@ import android.view.View;
 
 import com.squareup.okhttp.OkHttpClient;
 
-import me.lijpeng.one.fragments.*;
+import java.util.ArrayList;
+
+import me.lijpeng.one.fragments.FragmentArticle;
+import me.lijpeng.one.fragments.FragmentOne;
+import me.lijpeng.one.fragments.FragmentQuestion;
 import me.lijpeng.one.viewpager.NoSlidingPageTransformer;
 import me.lijpeng.one.viewpager.NoSlidingViewPaper;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,16 +35,16 @@ public class MainActivity extends AppCompatActivity {
 
             articleContainer = findViewById(R.id.swipe_article_container);
             switch (item.getItemId()) {
-                case R.id.navigation_home:
+                case R.id.navigation_one:
                     if (mViewPager.getCurrentItem() == 2)
                         articleContainer.setVisibility(View.INVISIBLE);
                     mViewPager.setCurrentItem(0);
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.navigation_article:
                     articleContainer.setVisibility(View.VISIBLE);
                     mViewPager.setCurrentItem(1);
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_question:
                     if (mViewPager.getCurrentItem() == 0)
                         articleContainer.setVisibility(View.INVISIBLE);
                     mViewPager.setCurrentItem(2);
@@ -63,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
         fgLists.add(new FragmentArticle());
         fgLists.add(new FragmentQuestion());
         NoSlidingPageTransformer pageTransformer = new NoSlidingPageTransformer();
-        pageTransformer.setCurrentItem(this, 0, fgLists);
         mViewPager.setPageTransformer(true, pageTransformer);
         FragmentPagerAdapter mAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override

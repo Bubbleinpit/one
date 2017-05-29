@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
-import android.view.View;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -16,8 +15,12 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+
 import me.lijpeng.one.R;
-import me.lijpeng.one.util.*;
+import me.lijpeng.one.util.OneContent;
+import me.lijpeng.one.util.PictureDataInDetailResponse;
+import me.lijpeng.one.util.PictureDetailResponse;
+import me.lijpeng.one.util.PictureListResponse;
 
 import static me.lijpeng.one.MainActivity.client;
 
@@ -75,12 +78,12 @@ public class FragmentOne extends BaseFragment {
         this.isVisibleToUser = isVisibleToUser;
         if (mSwipeLayout != null) {
             if (!isVisibleToUser) {
-                mSwipeLayout.setEnabled(false);
-                mScrollView.setVisibility(View.INVISIBLE);
+                //mSwipeLayout.setEnabled(false);
+                //mScrollView.setVisibility(View.INVISIBLE);
                 return;
             } else {
-                mSwipeLayout.setEnabled(true);
-                mScrollView.setVisibility(View.VISIBLE);
+                //mSwipeLayout.setEnabled(true);
+                //mScrollView.setVisibility(View.VISIBLE);
             }
         }
         prepareGetData(false);
