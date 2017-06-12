@@ -17,12 +17,12 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import me.lijpeng.one.R;
+import me.lijpeng.one.preload.BaseData;
 import me.lijpeng.one.util.OneContent;
-import me.lijpeng.one.util.PictureDataInDetailResponse;
-import me.lijpeng.one.util.PictureDetailResponse;
-import me.lijpeng.one.util.PictureListResponse;
-
-import static me.lijpeng.one.MainActivity.client;
+import me.lijpeng.one.util.response.picture.PictureDataInDetailResponse;
+import me.lijpeng.one.util.response.picture.PictureDetailResponse;
+import me.lijpeng.one.util.response.ListResponse;
+import static me.lijpeng.one.SplashActivity.client;
 
 /**
  * Created by ljp on 2017/5/25.
@@ -76,6 +76,7 @@ public class FragmentOne extends BaseFragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         this.isVisibleToUser = isVisibleToUser;
+        /*
         if (mSwipeLayout != null) {
             if (!isVisibleToUser) {
                 //mSwipeLayout.setEnabled(false);
@@ -86,6 +87,7 @@ public class FragmentOne extends BaseFragment {
                 //mScrollView.setVisibility(View.VISIBLE);
             }
         }
+        */
         prepareGetData(false);
     }
 
@@ -97,25 +99,10 @@ public class FragmentOne extends BaseFragment {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                Request getPictureId = new Request.Builder()
-                        .url("http://v3.wufazhuce.com:8000/api/hp/idlist/0")
-                        .get()
-                        .build();
                 Response response;
                 String result;
-                try {
-                    response = client.newCall(getPictureId).execute();
-                    result = response.body().string();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    finishLoadForError.sendMessage(new Message());
-                    return;
-                }
-                Gson gson = new Gson();
-                PictureListResponse pictureList = gson.fromJson(result, PictureListResponse.class);
-                String pictureId = pictureList.getData().get(0);
                 Request getPictureDetail = new Request.Builder()
-                        .url("http://v3.wufazhuce.com:8000/api/hp/detail/" + pictureId)
+                        .url("http://v3.wufazhuce.com:8000/api/hp/detail/" + BaseData.getPictureId())
                         .get()
                         .build();
                 try {
@@ -126,7 +113,7 @@ public class FragmentOne extends BaseFragment {
                     finishLoadForError.sendMessage(new Message());
                     return;
                 }
-                gson = new Gson();
+                Gson gson = new Gson();
                 PictureDetailResponse pictureDetail = gson.fromJson(result, PictureDetailResponse.class);
                 PictureDataInDetailResponse pictureInfo = pictureDetail.getData();
                 String pictureAuthor = pictureInfo.getHp_author();
@@ -206,6 +193,7 @@ public class FragmentOne extends BaseFragment {
     @Override
     public void onRefresh() {
         mScrollView.startAnimation(disappearAnimation);
+        BaseData.getBaseData();
         if (!prepareGetData(true)) {
             mSwipeLayout.setRefreshing(false);
             mScrollView.startAnimation(appearAnimation);

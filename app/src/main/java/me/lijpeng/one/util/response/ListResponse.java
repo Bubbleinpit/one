@@ -1,12 +1,14 @@
-package me.lijpeng.one.util;
+package me.lijpeng.one.util.response;
+
+import java.util.List;
 
 /**
  * Created by ljp on 2017/5/26.
  */
 
-public class PictureDetailResponse {
+public class ListResponse {
     private String res;
-    private PictureDataInDetailResponse data;
+    private List<String> data;
 
     public String getRes() {
         return res;
@@ -16,11 +18,11 @@ public class PictureDetailResponse {
         this.res = res;
     }
 
-    public PictureDataInDetailResponse getData() {
+    public List<String> getData() {
         return data;
     }
 
-    public void setData(PictureDataInDetailResponse data) {
+    public void setData(List<String> data) {
         this.data = data;
     }
 }

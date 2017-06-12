@@ -10,8 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.squareup.okhttp.OkHttpClient;
-
 import java.util.ArrayList;
 
 import me.lijpeng.one.fragments.FragmentArticle;
@@ -22,10 +20,8 @@ import me.lijpeng.one.viewpager.NoSlidingViewPaper;
 
 public class MainActivity extends AppCompatActivity {
 
-    //private TextView mTextMessage;
     private ViewPager mViewPager;
     private View articleContainer;
-    public static OkHttpClient client = new OkHttpClient();
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {

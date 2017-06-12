@@ -17,9 +17,10 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import me.lijpeng.one.R;
-import me.lijpeng.one.util.ArticleDetailResponse;
+import me.lijpeng.one.preload.BaseData;
+import me.lijpeng.one.util.response.article.ArticleDetailResponse;
 
-import static me.lijpeng.one.MainActivity.client;
+import static me.lijpeng.one.SplashActivity.client;
 
 /**
  * Created by ljp on 2017/5/25.
@@ -34,6 +35,7 @@ public class FragmentArticle extends BaseFragment {
     protected void initView() {
         mSwipeLayout = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_article_container);
         mWebView = (WebView) mView.findViewById(R.id.articleWebView);
+        mWebView.setBackgroundColor(0);
         mProgressBar = (ProgressBar) mView.findViewById(R.id.webViewLoading);
         mSwipeLayout.setOnRefreshListener(this);
         mSwipeLayout.setColorSchemeResources(R.color.colorPrimary);
@@ -111,7 +113,7 @@ public class FragmentArticle extends BaseFragment {
             @Override
             public void run() {
                 Request getArticle = new Request.Builder()
-                        .url("http://v3.wufazhuce.com:8000/api/essay/1720?version=4.2.2")
+                        .url("http://v3.wufazhuce.com:8000/api/essay/" + BaseData.getArticleId() + "?version=4.2.2")
                         .get()
                         .build();
                 Response response;
@@ -138,6 +140,7 @@ public class FragmentArticle extends BaseFragment {
     @Override
     public void onRefresh() {
         mWebView.startAnimation(disappearAnimation);
+        BaseData.getBaseData();
         if (!prepareGetData(true)) {
             mSwipeLayout.setRefreshing(false);
             mWebView.startAnimation(appearAnimation);

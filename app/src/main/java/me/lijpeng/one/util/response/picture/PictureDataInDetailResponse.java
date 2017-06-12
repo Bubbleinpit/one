@@ -1,4 +1,4 @@
-package me.lijpeng.one.util;
+package me.lijpeng.one.util.response.picture;
 
 /**
  * Created by ljp on 2017/5/26.

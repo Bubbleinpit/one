@@ -1,4 +1,6 @@
-package me.lijpeng.one.util;
+package me.lijpeng.one.util.response.article;
+
+import me.lijpeng.one.util.ArticleAuthorDetail;
 
 /**
  * Created by ljp on 2017/5/28.
