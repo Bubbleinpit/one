@@ -1,12 +1,12 @@
-package me.lijpeng.one.util;
+package me.lijpeng.one.util.response.article;
 
 /**
  * Created by ljp on 2017/5/28.
  */
 
 public class ArticleAuthorDetail {
-    private String wb_name;
-    private String web_url;
+    private String wb_name;     //作者微博名
+    private String web_url;     //作者头像地址
 
     public String getWb_name() {
         return wb_name;

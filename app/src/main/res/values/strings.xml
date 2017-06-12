@@ -9,4 +9,5 @@
     <string name="picture_author">摄影 | 李继鹏</string>
     <string name="date_day">01</string>
     <string name="date_month_and_year">Jan.1900</string>
+    <string name="author_text">作者\n━━━━</string>
 </resources>

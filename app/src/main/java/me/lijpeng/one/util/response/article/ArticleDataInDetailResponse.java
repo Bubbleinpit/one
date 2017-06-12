@@ -1,21 +1,20 @@
 package me.lijpeng.one.util.response.article;
 
-import me.lijpeng.one.util.ArticleAuthorDetail;
-
 /**
  * Created by ljp on 2017/5/28.
  */
 
 public class ArticleDataInDetailResponse {
-    private String hp_title;
-    private String sub_title;
-    private String hp_author;
-    private String auth_it;
-    private String hp_author_introduce;
-    private String hp_content;
-    private String guideWord;
-    private String copyright;
-    private ArticleAuthorDetail[] authorDetail;
+    private String hp_title;    //标题
+    private String sub_title;   //副标题
+    private String hp_author;   //作者名
+    private String auth_it;     //作者签名/简介
+    private String hp_author_introduce; //责任编辑信息
+    private String hp_content;  //webview内容
+    private String guide_word;  //导语
+    private String editor_email;    // 责任编辑电子邮箱
+    private String copyright;   //转载声明
+    private ArticleAuthorDetail[] author;   //作者详细信息
 
     public String getHp_title() {
         return hp_title;
@@ -65,12 +64,12 @@ public class ArticleDataInDetailResponse {
         this.hp_content = hp_content;
     }
 
-    public String getGuideWord() {
-        return guideWord;
+    public String getGuide_word() {
+        return guide_word;
     }
 
-    public void setGuideWord(String guideWord) {
-        this.guideWord = guideWord;
+    public void setGuide_word(String guideWord) {
+        this.guide_word = guideWord;
     }
 
     public String getCopyright() {
@@ -81,11 +80,19 @@ public class ArticleDataInDetailResponse {
         this.copyright = copyright;
     }
 
-    public ArticleAuthorDetail[] getAuthorDetail() {
-        return authorDetail;
+    public ArticleAuthorDetail[] getAuthor() {
+        return author;
     }
 
-    public void setAuthorDetail(ArticleAuthorDetail[] authorDetail) {
-        this.authorDetail = authorDetail;
+    public void setAuthor(ArticleAuthorDetail[] authorDetail) {
+        this.author = authorDetail;
+    }
+
+    public String getEditor_email() {
+        return editor_email;
+    }
+
+    public void setEditor_email(String editor_email) {
+        this.editor_email = editor_email;
     }
 }

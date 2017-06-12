@@ -21,7 +21,8 @@ import me.lijpeng.one.preload.BaseData;
 import me.lijpeng.one.util.OneContent;
 import me.lijpeng.one.util.response.picture.PictureDataInDetailResponse;
 import me.lijpeng.one.util.response.picture.PictureDetailResponse;
-import me.lijpeng.one.util.response.ListResponse;
+
+import static android.text.TextUtils.isEmpty;
 import static me.lijpeng.one.SplashActivity.client;
 
 /**
@@ -99,10 +100,15 @@ public class FragmentOne extends BaseFragment {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
+                String pictureId = BaseData.getPictureId();
+                if (isEmpty(pictureId)) {
+                    finishLoadForError.sendMessage(new Message());
+                    return;
+                }
                 Response response;
                 String result;
                 Request getPictureDetail = new Request.Builder()
-                        .url("http://v3.wufazhuce.com:8000/api/hp/detail/" + BaseData.getPictureId())
+                        .url("http://v3.wufazhuce.com:8000/api/hp/detail/" + pictureId)
                         .get()
                         .build();
                 try {
@@ -193,10 +199,31 @@ public class FragmentOne extends BaseFragment {
     @Override
     public void onRefresh() {
         mScrollView.startAnimation(disappearAnimation);
-        BaseData.getBaseData();
-        if (!prepareGetData(true)) {
-            mSwipeLayout.setRefreshing(false);
-            mScrollView.startAnimation(appearAnimation);
-        }   //获取失败得让界面显示回来
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int result = BaseData.getBaseData(); //只有result值为0，才说明函数正常返回
+                Message msg = new Message();
+                msg.obj = result;
+                finishLoad.sendMessage(msg);
+            }
+        });
+        t.start();
     }
+
+    Handler finishLoad = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            if ((int)msg.obj < 0) {
+                Toast.makeText(getActivity(), "网络错误", Toast.LENGTH_SHORT).show();
+                mSwipeLayout.setRefreshing(false);
+                mScrollView.startAnimation(appearAnimation);
+            } else {
+                if (!prepareGetData(true)) {
+                    mSwipeLayout.setRefreshing(false);
+                    mScrollView.startAnimation(appearAnimation);
+                }   //获取失败得让界面显示回来
+            }
+        }
+    };
 }
