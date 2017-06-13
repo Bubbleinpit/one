@@ -4,24 +4,30 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import java.lang.ref.WeakReference;
+
 import me.lijpeng.one.R;
-import me.lijpeng.one.circleimageview.CircleImageView;
+import me.lijpeng.one.customview.circleimageview.CircleImageView;
+import me.lijpeng.one.customview.scrollview.ObservableScrollView;
 import me.lijpeng.one.preload.BaseData;
 import me.lijpeng.one.util.ArticleContent;
 import me.lijpeng.one.util.response.article.ArticleDetailResponse;
@@ -33,22 +39,28 @@ import static me.lijpeng.one.SplashActivity.client;
  * Created by ljp on 2017/5/25.
  */
 
-public class FragmentArticle extends BaseFragment {
+public class FragmentArticle extends BaseFragment implements ObservableScrollView.ScrollViewListener {
     private SwipeRefreshLayout mSwipeLayout;
     private WebView mWebView;
     private ProgressBar mProgressBar;
-    private ScrollView mScrollView;
+    private ObservableScrollView mScrollView;
+    private Toolbar mToolbar;
+    private BottomNavigationView mNavigationBar;
 
     @Override
     protected void initView() {
         mSwipeLayout = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_article_container);
         mWebView = (WebView) mView.findViewById(R.id.articleWebView);
         mProgressBar = (ProgressBar) mView.findViewById(R.id.webViewLoading);
-        mScrollView = (ScrollView) mView.findViewById(R.id.scroll_article_container);
-        mWebView.setBackgroundColor(0);
+        mScrollView = (ObservableScrollView) mView.findViewById(R.id.scroll_article_container);
+        mToolbar = (Toolbar) getActivity().findViewById(R.id.one_toolbar);
+        mNavigationBar = (BottomNavigationView) getActivity().findViewById(R.id.navigation_bar);
+        mScrollView.setScrollViewListener(this);
+        mSwipeLayout.setProgressViewOffset(false, 30, 128); //下移下拉刷新加载圈的位置
         mSwipeLayout.setOnRefreshListener(this);
         mSwipeLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeLayout.setRefreshing(true);
+        mWebView.setBackgroundColor(0);
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -123,9 +135,11 @@ public class FragmentArticle extends BaseFragment {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
+                Message errorMsg = new Message();
+                errorMsg.what = 2;
                 String articleId = BaseData.getArticleId();
                 if (isEmpty(articleId)) {
-                    finishLoadForError.sendMessage(new Message());
+                    msgHandler.sendMessage(errorMsg);
                     return;
                 }
                 Request getArticle = new Request.Builder()
@@ -139,7 +153,7 @@ public class FragmentArticle extends BaseFragment {
                     result = response.body().string();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    finishLoadForError.sendMessage(new Message());
+                    msgHandler.sendMessage(errorMsg);
                     return;
                 }
                 Gson gson = new Gson();
@@ -162,7 +176,7 @@ public class FragmentArticle extends BaseFragment {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    finishLoadForError.sendMessage(new Message());
+                    msgHandler.sendMessage(errorMsg);
                     return;
                 }
 
@@ -180,60 +194,92 @@ public class FragmentArticle extends BaseFragment {
                 articleContent.setGuideWord(articleDetail.getData().getGuide_word());
 
                 Message msg = new Message();
+                msg.what = 0;
                 msg.obj = articleContent;
-                setArticleUiHandler.sendMessage(msg);
+                msgHandler.sendMessage(msg);
             }
         });
         t.start();
     }
 
-    Handler setArticleUiHandler = new Handler() {
+    private static class MsgHandler extends Handler {
+        private WeakReference<FragmentArticle> mFragment;
+
+        MsgHandler(FragmentArticle activity) {
+            mFragment = new WeakReference<>(activity);
+        }
+
         @Override
         public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            ArticleContent articleContent = (ArticleContent) msg.obj;
-            mWebView.loadData(articleContent.getArticleContent(), "text/html; charset=UTF-8", null);
-            mWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-            mWebView.getSettings().setJavaScriptEnabled(true);
-
-            TextView mGuideWord = (TextView) mView.findViewById(R.id.tv_guide_word);
-            TextView mArticleTitle = (TextView) mView.findViewById(R.id.tv_title);
-            TextView mSubTitle = (TextView) mView.findViewById(R.id.tv_sub_title);
-            TextView mAuthorTop = (TextView) mView.findViewById(R.id.tv_author_top);
-            TextView mEditorInfo = (TextView) mView.findViewById(R.id.tv_editor_info);
-            TextView mCopyright = (TextView) mView.findViewById(R.id.tv_copyright);
-            CircleImageView mHeadView = (CircleImageView) mView.findViewById(R.id.iv_head);
-            TextView mAuthorBottom = (TextView) mView.findViewById(R.id.tv_author_bottom);
-            TextView mAuthorInfo = (TextView) mView.findViewById(R.id.tv_author_info);
-
-            mGuideWord.setText(articleContent.getGuideWord());
-            mArticleTitle.setText(articleContent.getTitle());
-            if (articleContent.getSubTitle().length() != 0)
-                mSubTitle.setText(articleContent.getSubTitle());
-            else
-                mSubTitle.setText("━━━━");
-            String authorTop = "文/" + articleContent.getAuthor();
-            mAuthorTop.setText(authorTop);
-            mEditorInfo.setText(articleContent.getEditorInfo());
-            mCopyright.setText(articleContent.getCopyright());
-            mHeadView.setImageBitmap(articleContent.getAuthorPhoto());
-            String authorBottom = articleContent.getAuthor() + " " + articleContent.getAuthorWeibo();
-            mAuthorBottom.setText(authorBottom);
-            mAuthorInfo.setText(articleContent.getAuthorInfo());
-
-            mSwipeLayout.setRefreshing(false);
-            mScrollView.startAnimation(appearAnimation);
+            FragmentArticle fragment = mFragment.get();
+            if (fragment != null) {
+                switch (msg.what) {
+                    case 0:
+                        fragment.setArticleUi(msg);
+                        break;
+                    case 1:
+                        fragment.handleRefreshResult(msg);
+                        break;
+                    case 2:
+                        fragment.handleNetRequestError();
+                        break;
+                }
+            }
         }
-    };
+    }   //额，防止内存泄漏把handler写成一个静态类
 
-    Handler finishLoadForError = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
+    MsgHandler msgHandler = new MsgHandler(this);
+
+    public void setArticleUi(Message msg) {
+        ArticleContent articleContent = (ArticleContent) msg.obj;
+        mWebView.loadData(articleContent.getArticleContent(), "text/html; charset=UTF-8", null);
+        mWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        mWebView.getSettings().setJavaScriptEnabled(true);
+
+        TextView mGuideWord = (TextView) mView.findViewById(R.id.tv_guide_word);
+        TextView mArticleTitle = (TextView) mView.findViewById(R.id.tv_title);
+        TextView mSubTitle = (TextView) mView.findViewById(R.id.tv_sub_title);
+        TextView mAuthorTop = (TextView) mView.findViewById(R.id.tv_author_top);
+        TextView mEditorInfo = (TextView) mView.findViewById(R.id.tv_editor_info);
+        TextView mCopyright = (TextView) mView.findViewById(R.id.tv_copyright);
+        CircleImageView mHeadView = (CircleImageView) mView.findViewById(R.id.iv_head);
+        TextView mAuthorBottom = (TextView) mView.findViewById(R.id.tv_author_bottom);
+        TextView mAuthorInfo = (TextView) mView.findViewById(R.id.tv_author_info);
+
+        mGuideWord.setText(articleContent.getGuideWord());
+        mArticleTitle.setText(articleContent.getTitle());
+        if (articleContent.getSubTitle().length() != 0)
+            mSubTitle.setText(articleContent.getSubTitle());
+        else
+            mSubTitle.setText("━━━━");
+        String authorTop = "文/" + articleContent.getAuthor();
+        mAuthorTop.setText(authorTop);
+        mEditorInfo.setText(articleContent.getEditorInfo());
+        mCopyright.setText(articleContent.getCopyright());
+        mHeadView.setImageBitmap(articleContent.getAuthorPhoto());
+        String authorBottom = articleContent.getAuthor() + " " + articleContent.getAuthorWeibo();
+        mAuthorBottom.setText(authorBottom);
+        mAuthorInfo.setText(articleContent.getAuthorInfo());
+
+        mSwipeLayout.setRefreshing(false);
+        mScrollView.startAnimation(appearAnimation);
+    }
+
+    public void handleRefreshResult(Message msg) {
+        if ((int)msg.obj < 0) {
+            Toast.makeText(getActivity(), "网络错误", Toast.LENGTH_SHORT).show();
             mSwipeLayout.setRefreshing(false);
-            Toast.makeText(getActivity(),"网络错误",Toast.LENGTH_SHORT).show();
+        } else {
+            if (!prepareGetData(true)) {
+                mSwipeLayout.setRefreshing(false);
+            }   //获取失败得让界面显示回来
         }
-    };
+    }
 
+    public void handleNetRequestError() {
+        mSwipeLayout.setRefreshing(false);
+        Toast.makeText(getActivity(),"网络错误",Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void onRefresh() {
@@ -243,24 +289,29 @@ public class FragmentArticle extends BaseFragment {
             public void run() {
                 int result = BaseData.getBaseData(); //只有result值为0，才说明函数正常返回
                 Message msg = new Message();
+                msg.what = 1;
                 msg.obj = result;
-                finishLoad.sendMessage(msg);
+                msgHandler.sendMessage(msg);
             }
         });
         t.start();
     }
 
-    Handler finishLoad = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            if ((int)msg.obj < 0) {
-                Toast.makeText(getActivity(), "网络错误", Toast.LENGTH_SHORT).show();
-                mSwipeLayout.setRefreshing(false);
-            } else {
-                if (!prepareGetData(true)) {
-                    mSwipeLayout.setRefreshing(false);
-                }   //获取失败得让界面显示回来
+    private boolean barIsGone = false;
+    @Override
+    public void onScrollChanged(ObservableScrollView scrollView, int x, int y, int oldx, int oldy) {
+        if (oldy < y && Math.abs(oldy - y) > 20) {
+            if (!barIsGone) {
+                mToolbar.animate().translationY(-mToolbar.getHeight()).setInterpolator(new AccelerateInterpolator(1));
+                mNavigationBar.animate().translationY(mNavigationBar.getHeight()).setInterpolator(new AccelerateInterpolator(1));
+                barIsGone = true;
+            }
+        } else if (oldy > y && Math.abs(oldy - y) > 20) {
+            if (barIsGone) {
+                mToolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(1));
+                mNavigationBar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(1));
+                barIsGone = false;
             }
         }
-    };
+    }
 }

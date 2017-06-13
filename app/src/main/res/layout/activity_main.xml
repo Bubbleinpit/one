@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
@@ -13,6 +13,7 @@
         android:id="@+id/one_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="top"
         android:background="@color/colorPrimary"
         android:elevation="4dp">
 
@@ -24,25 +25,17 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <FrameLayout
-        android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <me.lijpeng.one.viewpager.NoSlidingViewPaper
+        <me.lijpeng.one.customview.viewpager.NoSlidingViewPaper
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-    </FrameLayout>
-
     <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
+        android:id="@+id/navigation_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_gravity="bottom"
         android:background="?android:attr/windowBackground"
         app:menu="@menu/navigation" />
 
-</LinearLayout>
+</FrameLayout>

@@ -1,4 +1,4 @@
-package me.lijpeng.one.viewpager;
+package me.lijpeng.one.customview.viewpager;
 
 import android.support.v4.view.ViewPager;
 import android.view.View;

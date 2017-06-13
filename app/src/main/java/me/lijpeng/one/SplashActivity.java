@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.squareup.okhttp.OkHttpClient;
 
+import java.lang.ref.WeakReference;
+
 import me.lijpeng.one.preload.BaseData;
 
 public class SplashActivity extends AppCompatActivity {
@@ -47,24 +49,39 @@ public class SplashActivity extends AppCompatActivity {
         t.start();
     }
 
-    Handler finishLoad = new Handler(){
+    private static class FinishLoadHandler extends Handler {
+        private WeakReference<SplashActivity> mActivity;
+
+        FinishLoadHandler(SplashActivity activity) {
+            mActivity = new WeakReference<>(activity);
+        }
+
         @Override
         public void handleMessage(Message msg) {
-            long endTime = System.currentTimeMillis();
-            if ((endTime - startTime) < 800) {
-                try {
-                    Thread.sleep(startTime + 800 - endTime);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }   //如果预加载数据的时间没有800毫秒（一般都不会超过的），就让启动界面显示至800毫秒再报错跳转
-
-            if ((int)msg.obj < 0)
-                Toast.makeText(getApplicationContext(),"网络错误",Toast.LENGTH_SHORT).show();
-
-            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-            SplashActivity.this.startActivity(intent);
-            finish();
+            SplashActivity activity = mActivity.get();
+            if (activity != null) {
+                activity.handleMessage(msg);
+            }
         }
-    };
+    }   //额，防止内存泄漏把handler写成一个静态类
+
+    public void handleMessage(Message msg) {
+        long endTime = System.currentTimeMillis();
+        if ((endTime - startTime) < 800) {
+            try {
+                Thread.sleep(startTime + 800 - endTime);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }   //如果预加载数据的时间没有800毫秒（一般都不会超过的），就让启动界面显示至800毫秒再报错跳转
+
+        if ((int)msg.obj < 0)
+            Toast.makeText(getApplicationContext(),"网络错误",Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+        SplashActivity.this.startActivity(intent);
+        finish();
+    }
+
+    FinishLoadHandler finishLoad = new FinishLoadHandler(this);
 }

@@ -38,6 +38,7 @@ public class FragmentOne extends BaseFragment {
     protected void initView() {
         mSwipeLayout = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_one_container);
         mScrollView = (ScrollView) mView.findViewById(R.id.scroll_one_container);
+        mSwipeLayout.setProgressViewOffset(false, 30, 128); //下移下拉刷新加载小圆圈的位置
         mSwipeLayout.setOnRefreshListener(this);
         mSwipeLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeLayout.setRefreshing(true);

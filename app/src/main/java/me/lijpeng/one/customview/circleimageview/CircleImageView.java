@@ -1,4 +1,4 @@
-package me.lijpeng.one.circleimageview;
+package me.lijpeng.one.customview.circleimageview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
