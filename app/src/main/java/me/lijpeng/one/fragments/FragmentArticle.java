@@ -30,7 +30,7 @@ import me.lijpeng.one.customview.circleimageview.CircleImageView;
 import me.lijpeng.one.customview.scrollview.ObservableScrollView;
 import me.lijpeng.one.preload.BaseData;
 import me.lijpeng.one.util.ArticleContent;
-import me.lijpeng.one.util.response.article.ArticleDetailResponse;
+import me.lijpeng.one.util.response.article.ArticleResponse;
 
 import static android.text.TextUtils.isEmpty;
 import static me.lijpeng.one.SplashActivity.client;
@@ -157,10 +157,10 @@ public class FragmentArticle extends BaseFragment implements ObservableScrollVie
                     return;
                 }
                 Gson gson = new Gson();
-                ArticleDetailResponse articleDetail = gson.fromJson(result, ArticleDetailResponse.class);
+                ArticleResponse articleInfo = gson.fromJson(result, ArticleResponse.class);
 
                 Request getPicture = new Request.Builder()
-                        .url(articleDetail.getData().getAuthor()[0].getWeb_url())
+                        .url(articleInfo.getData().getAuthor()[0].getWeb_url())
                         .get()
                         .build();
                 Bitmap bitmap;
@@ -181,17 +181,17 @@ public class FragmentArticle extends BaseFragment implements ObservableScrollVie
                 }
 
                 ArticleContent articleContent = new ArticleContent();
-                articleContent.setTitle(articleDetail.getData().getHp_title());
-                articleContent.setSubTitle(articleDetail.getData().getSub_title());
-                articleContent.setAuthor(articleDetail.getData().getHp_author());
-                articleContent.setAuthorInfo(articleDetail.getData().getAuth_it());
-                articleContent.setAuthorWeibo(articleDetail.getData().getAuthor()[0].getWb_name());
+                articleContent.setTitle(articleInfo.getData().getHp_title());
+                articleContent.setSubTitle(articleInfo.getData().getSub_title());
+                articleContent.setAuthor(articleInfo.getData().getHp_author());
+                articleContent.setAuthorInfo(articleInfo.getData().getAuth_it());
+                articleContent.setAuthorWeibo(articleInfo.getData().getAuthor()[0].getWb_name());
                 articleContent.setAuthorPhoto(bitmap);
-                articleContent.setArticleContent(articleDetail.getData().getHp_content());
-                articleContent.setCopyright(articleDetail.getData().getCopyright());
-                Log.d("tag", "收到的copyright：" + articleDetail.getData().getCopyright());
-                articleContent.setEditorInfo(articleDetail.getData().getHp_author_introduce() + " " + articleDetail.getData().getEditor_email());
-                articleContent.setGuideWord(articleDetail.getData().getGuide_word());
+                articleContent.setArticleContent(articleInfo.getData().getHp_content());
+                articleContent.setCopyright(articleInfo.getData().getCopyright());
+                Log.d("tag", "收到的copyright：" + articleInfo.getData().getCopyright());
+                articleContent.setEditorInfo(articleInfo.getData().getHp_author_introduce() + " " + articleInfo.getData().getEditor_email());
+                articleContent.setGuideWord(articleInfo.getData().getGuide_word());
 
                 Message msg = new Message();
                 msg.what = 0;

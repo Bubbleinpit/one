@@ -19,8 +19,8 @@ import com.squareup.okhttp.Response;
 import me.lijpeng.one.R;
 import me.lijpeng.one.preload.BaseData;
 import me.lijpeng.one.util.OneContent;
-import me.lijpeng.one.util.response.picture.PictureDataInDetailResponse;
 import me.lijpeng.one.util.response.picture.PictureDetailResponse;
+import me.lijpeng.one.util.response.picture.PictureResponse;
 
 import static android.text.TextUtils.isEmpty;
 import static me.lijpeng.one.SplashActivity.client;
@@ -121,13 +121,13 @@ public class FragmentOne extends BaseFragment {
                     return;
                 }
                 Gson gson = new Gson();
-                PictureDetailResponse pictureDetail = gson.fromJson(result, PictureDetailResponse.class);
-                PictureDataInDetailResponse pictureInfo = pictureDetail.getData();
-                String pictureAuthor = pictureInfo.getHp_author();
-                String oneText = pictureInfo.getHp_content();
-                String pictureUrl = pictureInfo.getHp_img_original_url();
-                String vol = pictureInfo.getHp_title();
-                String time = pictureInfo.getHp_makettime();
+                PictureResponse pictureInfo = gson.fromJson(result, PictureResponse.class);
+                PictureDetailResponse pictureDetail = pictureInfo.getData();
+                String pictureAuthor = pictureDetail.getHp_author();
+                String oneText = pictureDetail.getHp_content();
+                String pictureUrl = pictureDetail.getHp_img_original_url();
+                String vol = pictureDetail.getHp_title();
+                String time = pictureDetail.getHp_makettime();
                 Request getPicture = new Request.Builder()
                         .url(pictureUrl)
                         .get()
