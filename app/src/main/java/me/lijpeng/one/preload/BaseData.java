@@ -45,7 +45,7 @@ public class BaseData {
 
     public static int getBaseData() {
         Request getTodayContent = new Request.Builder()
-                .url("http://www.wufazhuce.com")
+                .url("http://m.wufazhuce.com")
                 .get()
                 .build();
         Response response;
@@ -58,11 +58,11 @@ public class BaseData {
             return -1;
         }
         Document parse = Jsoup.parse(result);
-        if (!parse.title().equals("「ONE · 一个」"))
+        if (!parse.title().contains("「ONE · 一个」"))
             return -1;
-        pictureId = parse.select("a[href^=http://wufazhuce.com/one/]").get(0).attr("href").trim().substring(25);
-        articleId = parse.select("a[href^=http://wufazhuce.com/article/]").get(0).attr("href").trim().substring(29);
-        questionID = parse.select("a[href^=http://wufazhuce.com/question/]").get(0).attr("href").trim().substring(30);
+        pictureId = parse.select("a[class=div-link][href^=http://m.wufazhuce.com/one/]").get(0).attr("href").trim().substring(27);
+        articleId = parse.select("a[class=div-link][href^=http://m.wufazhuce.com/article/]").get(0).attr("href").trim().substring(31);
+        questionID = parse.select("a[class=div-link][href^=http://m.wufazhuce.com/question/]").get(0).attr("href").trim().substring(32);
         return 0;
     }
 }

@@ -1,5 +1,6 @@
 package me.lijpeng.one;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -7,12 +8,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ScrollView;
+import android.support.v7.widget.Toolbar;
 
 import java.util.ArrayList;
 
+import me.lijpeng.one.GestureListener.HorizontalSlideListener;
 import me.lijpeng.one.customview.scrollview.ObservableScrollView;
 import me.lijpeng.one.fragments.FragmentArticle;
 import me.lijpeng.one.fragments.FragmentOne;
@@ -70,6 +73,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mViewPager = (NoSlidingViewPaper) findViewById(R.id.viewpager);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.one_toolbar);
+        mToolbar.setLongClickable(true);
+        mToolbar.setOnTouchListener(new MyGestureListener(this));
         final ArrayList<Fragment> fgLists = new ArrayList<>(3);
         fgLists.add(new FragmentOne());
         fgLists.add(new FragmentArticle());
@@ -92,6 +98,27 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation_bar);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    /**
+     * 继承HorizontalSlideListener，重写left和right方法
+     */
+    private class MyGestureListener extends HorizontalSlideListener {
+        MyGestureListener(Context context) {
+            super(context);
+        }
+
+        @Override
+        public boolean left() {
+            Log.e("test", "向左滑");
+            return super.left();
+        }
+
+        @Override
+        public boolean right() {
+            Log.e("test", "向右滑");
+            return super.right();
+        }
     }
 
 }
