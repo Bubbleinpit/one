@@ -13,17 +13,15 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="16dp">
-            <View
-                android:id="@+id/head_view_article"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"/>
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:paddingBottom="76dp">
             <TextView
                 android:id="@+id/tv_guide_word"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/head_view_article"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="24dp"
                 android:lineSpacingMultiplier="1.3"
                 android:textSize="16sp"
                 android:gravity="start"/>
@@ -115,7 +113,7 @@
                     android:scaleType="centerCrop"/>
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="16dp">
                     <TextView
                         android:id="@+id/tv_author_bottom"
@@ -123,25 +121,21 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentStart="true"
-                        android:paddingTop="4dp"
+                        android:paddingTop="3dp"
                         android:textSize="16sp"
                         android:textColor="#444444"/>
                     <TextView
                         android:id="@+id/tv_author_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
                         android:layout_alignParentStart="true"
-                        android:paddingBottom="6dp"
+                        android:layout_below="@+id/tv_author_bottom"
+                        android:paddingTop="4dp"
+                        android:lineSpacingMultiplier="1.2"
                         android:textSize="12sp"
                         android:fontFamily="sans-serif-light"/>
                 </RelativeLayout>
             </LinearLayout>
-            <View
-                android:id="@+id/bottom_view_article"
-                android:layout_below="@+id/layout_author_info"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"/>
         </RelativeLayout>
     </me.lijpeng.one.customview.scrollview.ObservableScrollView>
 </android.support.v4.widget.SwipeRefreshLayout>
