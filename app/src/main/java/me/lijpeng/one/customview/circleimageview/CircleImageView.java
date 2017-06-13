@@ -17,7 +17,7 @@ import android.util.AttributeSet;
 
 import me.lijpeng.one.R;
 
-/**
+/*
  * Created by ljp on 2017/6/13.
  */
 

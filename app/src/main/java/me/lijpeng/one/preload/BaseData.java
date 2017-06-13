@@ -10,7 +10,7 @@ import java.util.Objects;
 
 import static me.lijpeng.one.SplashActivity.client;
 
-/**
+/*
  * Created by ljp on 2017/6/12.
  */
 

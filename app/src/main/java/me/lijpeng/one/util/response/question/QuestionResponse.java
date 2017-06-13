@@ -1,6 +1,6 @@
 package me.lijpeng.one.util.response.question;
 
-/**
+/*
  * Created by ljp on 2017/6/13.
  */
 

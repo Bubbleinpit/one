@@ -25,7 +25,7 @@ import me.lijpeng.one.util.response.picture.PictureResponse;
 import static android.text.TextUtils.isEmpty;
 import static me.lijpeng.one.SplashActivity.client;
 
-/**
+/*
  * Created by ljp on 2017/5/25.
  */
 
@@ -123,13 +123,8 @@ public class FragmentOne extends BaseFragment {
                 Gson gson = new Gson();
                 PictureResponse pictureInfo = gson.fromJson(result, PictureResponse.class);
                 PictureDetailResponse pictureDetail = pictureInfo.getData();
-                String pictureAuthor = pictureDetail.getHp_author();
-                String oneText = pictureDetail.getHp_content();
-                String pictureUrl = pictureDetail.getHp_img_original_url();
-                String vol = pictureDetail.getHp_title();
-                String time = pictureDetail.getHp_makettime();
                 Request getPicture = new Request.Builder()
-                        .url(pictureUrl)
+                        .url(pictureDetail.getHp_img_original_url())
                         .get()
                         .build();
                 Bitmap bitmap;
@@ -150,10 +145,10 @@ public class FragmentOne extends BaseFragment {
                 }
                 OneContent content = new OneContent();
                 content.setBitmap(bitmap);
-                content.setOneText(oneText);
-                content.setPictureAuthor(pictureAuthor);
-                content.setTime(time);
-                content.setVol(vol);
+                content.setOneText(pictureDetail.getHp_content());
+                content.setPictureAuthor(pictureDetail.getHp_author());
+                content.setTime(pictureDetail.getHp_makettime());
+                content.setVol(pictureDetail.getHp_title());
                 Message msg = new Message();
                 msg.obj = content;
                 setOneUiHandler.sendMessage(msg);

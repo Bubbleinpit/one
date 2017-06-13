@@ -2,7 +2,7 @@ package me.lijpeng.one.util;
 
 import android.graphics.Bitmap;
 
-/**
+/*
  * Created by ljp on 2017/5/27.
  */
 

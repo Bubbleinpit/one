@@ -5,10 +5,135 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <me.lijpeng.one.customview.scrollview.ObservableScrollView
-        android:id="@+id/scroll_quesiotn_container"
+        android:id="@+id/scroll_question_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:descendantFocusability="blocksDescendants"
         android:alpha="0">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:paddingBottom="132dp">
+            <TextView
+                android:id="@+id/tv_question_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="start"
+                android:textSize="26sp"
+                android:textColor="@android:color/black"
+                android:lineSpacingMultiplier="1.2"/>
+            <RelativeLayout
+                android:id="@+id/layout_asker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_below="@+id/tv_question_title">
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/ic_question_color_24dp"/>
+                <TextView
+                    android:id="@+id/tv_asker_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/iv_asker_head"
+                    android:layout_marginRight="8dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorPrimary" />
+                <me.lijpeng.one.customview.circleimageview.CircleImageView
+                    android:id="@+id/iv_asker_head"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    app:border_width="0dp"
+                    app:border_color="@android:color/transparent"
+                    android:scaleType="centerCrop"/>
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_question_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_asker"
+                android:layout_marginTop="16dp"
+                android:lineSpacingMultiplier="1.5"
+                android:textSize="14sp"
+                android:textColor="#444444"
+                android:fontFamily="sans-serif-light"
+                android:gravity="start"/>
+
+            <View
+                android:id="@+id/cut_line"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@+id/tv_question_content"
+                android:layout_marginTop="50dp"
+                android:background="#77777777"/>
+
+            <RelativeLayout
+                android:id="@+id/layout_answerer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:layout_below="@+id/cut_line">
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/ic_chat_bubble_color_24dp"/>
+                <TextView
+                    android:id="@+id/tv_answerer_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/iv_answerer_head"
+                    android:layout_marginRight="8dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorPrimary" />
+                <me.lijpeng.one.customview.circleimageview.CircleImageView
+                    android:id="@+id/iv_answerer_head"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    app:border_width="0dp"
+                    app:border_color="@android:color/transparent"
+                    android:scaleType="centerCrop"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/layout_question_webView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:descendantFocusability="blocksDescendants"
+                android:layout_below="@+id/layout_answerer">
+                <WebView
+                    android:id="@+id/answerWebView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <ProgressBar
+                    android:id="@+id/answerWebViewLoading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    style="@style/MyProgressBar"
+                    android:visibility="gone"/>
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_question_editor_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:layout_below="@+id/layout_question_webView"
+                android:layout_marginTop="40dp"
+                android:textStyle="italic"
+                android:fontFamily="sans-serif-light"/>
+        </RelativeLayout>
     </me.lijpeng.one.customview.scrollview.ObservableScrollView>
 </android.support.v4.widget.SwipeRefreshLayout>

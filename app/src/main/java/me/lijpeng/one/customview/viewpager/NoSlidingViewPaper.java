@@ -5,7 +5,7 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-/**
+/*
  * 取消滑动页面的响应
  */
 public class NoSlidingViewPaper extends ViewPager {

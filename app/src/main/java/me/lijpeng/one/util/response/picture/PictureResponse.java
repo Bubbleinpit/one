@@ -1,6 +1,6 @@
 package me.lijpeng.one.util.response.picture;
 
-/**
+/*
  * Created by ljp on 2017/5/26.
  */
 

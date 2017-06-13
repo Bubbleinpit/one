@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ScrollView;
 
-/**
+/*
  * Created by ljp on 2017/6/13.
  * 为了监听ScrollView的滚动事件
  */

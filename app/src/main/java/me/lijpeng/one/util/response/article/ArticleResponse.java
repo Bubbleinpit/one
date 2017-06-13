@@ -1,6 +1,6 @@
 package me.lijpeng.one.util.response.article;
 
-/**
+/*
  * Created by ljp on 2017/5/28.
  */
 

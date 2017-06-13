@@ -35,7 +35,7 @@ import me.lijpeng.one.util.response.article.ArticleResponse;
 import static android.text.TextUtils.isEmpty;
 import static me.lijpeng.one.SplashActivity.client;
 
-/**
+/*
  * Created by ljp on 2017/5/25.
  */
 
@@ -51,7 +51,7 @@ public class FragmentArticle extends BaseFragment implements ObservableScrollVie
     protected void initView() {
         mSwipeLayout = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_article_container);
         mWebView = (WebView) mView.findViewById(R.id.articleWebView);
-        mProgressBar = (ProgressBar) mView.findViewById(R.id.webViewLoading);
+        mProgressBar = (ProgressBar) mView.findViewById(R.id.articleWebViewLoading);
         mScrollView = (ObservableScrollView) mView.findViewById(R.id.scroll_article_container);
         mToolbar = (Toolbar) getActivity().findViewById(R.id.one_toolbar);
         mNavigationBar = (BottomNavigationView) getActivity().findViewById(R.id.navigation_bar);
@@ -110,7 +110,6 @@ public class FragmentArticle extends BaseFragment implements ObservableScrollVie
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        this.isVisibleToUser = isVisibleToUser;
         this.isVisibleToUser = isVisibleToUser;
         /*
         if (mSwipeLayout != null) {
@@ -189,7 +188,6 @@ public class FragmentArticle extends BaseFragment implements ObservableScrollVie
                 articleContent.setAuthorPhoto(bitmap);
                 articleContent.setArticleContent(articleInfo.getData().getHp_content());
                 articleContent.setCopyright(articleInfo.getData().getCopyright());
-                Log.d("tag", "收到的copyright：" + articleInfo.getData().getCopyright());
                 articleContent.setEditorInfo(articleInfo.getData().getHp_author_introduce() + " " + articleInfo.getData().getEditor_email());
                 articleContent.setGuideWord(articleInfo.getData().getGuide_word());
 
@@ -205,8 +203,8 @@ public class FragmentArticle extends BaseFragment implements ObservableScrollVie
     private static class MsgHandler extends Handler {
         private WeakReference<FragmentArticle> mFragment;
 
-        MsgHandler(FragmentArticle activity) {
-            mFragment = new WeakReference<>(activity);
+        MsgHandler(FragmentArticle fragment) {
+            mFragment = new WeakReference<>(fragment);
         }
 
         @Override
@@ -240,7 +238,7 @@ public class FragmentArticle extends BaseFragment implements ObservableScrollVie
         TextView mArticleTitle = (TextView) mView.findViewById(R.id.tv_title);
         TextView mSubTitle = (TextView) mView.findViewById(R.id.tv_sub_title);
         TextView mAuthorTop = (TextView) mView.findViewById(R.id.tv_author_top);
-        TextView mEditorInfo = (TextView) mView.findViewById(R.id.tv_editor_info);
+        TextView mEditorInfo = (TextView) mView.findViewById(R.id.tv_article_editor_info);
         TextView mCopyright = (TextView) mView.findViewById(R.id.tv_copyright);
         CircleImageView mHeadView = (CircleImageView) mView.findViewById(R.id.iv_head);
         TextView mAuthorBottom = (TextView) mView.findViewById(R.id.tv_author_bottom);
@@ -266,7 +264,7 @@ public class FragmentArticle extends BaseFragment implements ObservableScrollVie
     }
 
     public void handleRefreshResult(Message msg) {
-        if ((int)msg.obj < 0) {
+        if ((int)msg.obj != 0) {
             Toast.makeText(getActivity(), "网络错误", Toast.LENGTH_SHORT).show();
             mSwipeLayout.setRefreshing(false);
         } else {

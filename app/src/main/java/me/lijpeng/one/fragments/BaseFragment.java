@@ -13,7 +13,7 @@ import android.view.animation.AnimationUtils;
 
 import me.lijpeng.one.R;
 
-/**
+/*
  * Created by ljp on 2017/5/25.
  */
 
