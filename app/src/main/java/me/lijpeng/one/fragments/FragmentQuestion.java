@@ -288,7 +288,7 @@ public class FragmentQuestion extends BaseFragment implements ObservableScrollVi
         } else {
             if (!prepareGetData(true)) {
                 mSwipeLayout.setRefreshing(false);
-            }   //获取失败得让界面显示回来
+            }
         }
     }
 

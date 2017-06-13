@@ -270,7 +270,7 @@ public class FragmentArticle extends BaseFragment implements ObservableScrollVie
         } else {
             if (!prepareGetData(true)) {
                 mSwipeLayout.setRefreshing(false);
-            }   //获取失败得让界面显示回来
+            }
         }
     }
 

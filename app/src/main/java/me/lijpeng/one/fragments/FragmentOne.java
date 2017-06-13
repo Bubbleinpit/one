@@ -16,6 +16,8 @@ import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import java.lang.ref.WeakReference;
+
 import me.lijpeng.one.R;
 import me.lijpeng.one.preload.BaseData;
 import me.lijpeng.one.util.OneContent;
@@ -101,9 +103,11 @@ public class FragmentOne extends BaseFragment {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
+                Message errorMsg = new Message();
+                errorMsg.what = 2;
                 String pictureId = BaseData.getPictureId();
                 if (isEmpty(pictureId)) {
-                    finishLoadForError.sendMessage(new Message());
+                    msgHandler.sendMessage(errorMsg);
                     return;
                 }
                 Response response;
@@ -117,7 +121,7 @@ public class FragmentOne extends BaseFragment {
                     result = response.body().string();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    finishLoadForError.sendMessage(new Message());
+                    msgHandler.sendMessage(errorMsg);
                     return;
                 }
                 Gson gson = new Gson();
@@ -140,7 +144,7 @@ public class FragmentOne extends BaseFragment {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    finishLoadForError.sendMessage(new Message());
+                    msgHandler.sendMessage(errorMsg);
                     return;
                 }
                 OneContent content = new OneContent();
@@ -150,47 +154,82 @@ public class FragmentOne extends BaseFragment {
                 content.setTime(pictureDetail.getHp_makettime());
                 content.setVol(pictureDetail.getHp_title());
                 Message msg = new Message();
+                msg.what = 0;
                 msg.obj = content;
-                setOneUiHandler.sendMessage(msg);
+                msgHandler.sendMessage(msg);
             }
         });
         t.start();
     }
 
-    Handler setOneUiHandler = new Handler() {
+    private static class MsgHandler extends Handler {
+        private WeakReference<FragmentOne> mFragment;
+
+        MsgHandler(FragmentOne fragment) {
+            mFragment = new WeakReference<>(fragment);
+        }
+
         @Override
         public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            OneContent content = (OneContent) msg.obj;
-            TextView pictureAuthorView = (TextView) mView.findViewById(R.id.picture_author);
-            TextView oneTextView = (TextView) mView.findViewById(R.id.one_text);
-            TextView volView = (TextView) mView.findViewById(R.id.one_vol);
-            ImageView image = (ImageView) mView.findViewById(R.id.one_picture);
-            TextView dayView = (TextView) mView.findViewById(R.id.date_day);
-            TextView monthAndYearView = (TextView) mView.findViewById(R.id.date_month_and_year);
+            FragmentOne fragment = mFragment.get();
+            if (fragment != null) {
+                switch (msg.what) {
+                    case 0:
+                        fragment.setOneUi(msg);
+                        break;
+                    case 1:
+                        fragment.handleRefreshResult(msg);
+                        break;
+                    case 2:
+                        fragment.handleNetRequestError();
+                        break;
+                }
+            }
+        }
+    }
 
-            pictureAuthorView.setText(content.getPictureAuthor());
-            oneTextView.setText(content.getOneText());
-            volView.setText(content.getVol());
-            image.setImageBitmap(content.getBitmap());
-            dayView.setText(content.getTime().substring(8, 10));
-            String year = content.getTime().substring(0, 4);
-            int month = Integer.parseInt(content.getTime().substring(5, 7));
-            year = monthList[month - 1] + year;
-            monthAndYearView.setText(year);
+    MsgHandler msgHandler = new MsgHandler(this);
+
+    public void setOneUi(Message msg) {
+        OneContent content = (OneContent) msg.obj;
+        TextView pictureAuthorView = (TextView) mView.findViewById(R.id.picture_author);
+        TextView oneTextView = (TextView) mView.findViewById(R.id.one_text);
+        TextView volView = (TextView) mView.findViewById(R.id.one_vol);
+        ImageView image = (ImageView) mView.findViewById(R.id.one_picture);
+        TextView dayView = (TextView) mView.findViewById(R.id.date_day);
+        TextView monthAndYearView = (TextView) mView.findViewById(R.id.date_month_and_year);
+
+        pictureAuthorView.setText(content.getPictureAuthor());
+        oneTextView.setText(content.getOneText());
+        volView.setText(content.getVol());
+        image.setImageBitmap(content.getBitmap());
+        dayView.setText(content.getTime().substring(8, 10));
+        String year = content.getTime().substring(0, 4);
+        int month = Integer.parseInt(content.getTime().substring(5, 7));
+        year = monthList[month - 1] + year;
+        monthAndYearView.setText(year);
+        mSwipeLayout.setRefreshing(false);
+        mScrollView.startAnimation(appearAnimation);
+    }
+
+    public void handleRefreshResult(Message msg) {
+        if ((int)msg.obj < 0) {
+            Toast.makeText(getActivity(), "网络错误", Toast.LENGTH_SHORT).show();
             mSwipeLayout.setRefreshing(false);
             mScrollView.startAnimation(appearAnimation);
+        }else {
+            if (!prepareGetData(true)) {
+                mSwipeLayout.setRefreshing(false);
+                mScrollView.startAnimation(appearAnimation);
+            }//获取失败得让界面显示回来
         }
-    };
+    }
 
-    Handler finishLoadForError = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            mSwipeLayout.setRefreshing(false);
-            mScrollView.startAnimation(appearAnimation);
-            Toast.makeText(getActivity(),"网络错误",Toast.LENGTH_SHORT).show();
-        }
-    };
+    public void handleNetRequestError() {
+        mSwipeLayout.setRefreshing(false);
+        mScrollView.startAnimation(appearAnimation);
+        Toast.makeText(getActivity(),"网络错误",Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void onRefresh() {
@@ -200,26 +239,11 @@ public class FragmentOne extends BaseFragment {
             public void run() {
                 int result = BaseData.getBaseData(); //只有result值为0，才说明函数正常返回
                 Message msg = new Message();
+                msg.what = 1;
                 msg.obj = result;
-                finishLoad.sendMessage(msg);
+                msgHandler.sendMessage(msg);
             }
         });
         t.start();
     }
-
-    Handler finishLoad = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            if ((int)msg.obj < 0) {
-                Toast.makeText(getActivity(), "网络错误", Toast.LENGTH_SHORT).show();
-                mSwipeLayout.setRefreshing(false);
-                mScrollView.startAnimation(appearAnimation);
-            } else {
-                if (!prepareGetData(true)) {
-                    mSwipeLayout.setRefreshing(false);
-                    mScrollView.startAnimation(appearAnimation);
-                }   //获取失败得让界面显示回来
-            }
-        }
-    };
 }
