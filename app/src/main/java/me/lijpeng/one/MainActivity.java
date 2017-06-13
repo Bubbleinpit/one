@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
             ObservableScrollView articleContainer = (ObservableScrollView) findViewById(R.id.scroll_article_container);
+            ObservableScrollView questionContainer = (ObservableScrollView) findViewById(R.id.scroll_question_container);
             switch (item.getItemId()) {
                 case R.id.navigation_one:
                     if (mViewPager.getCurrentItem() == 2 && articleContainer.getVisibility() == View.VISIBLE) {
@@ -39,12 +40,20 @@ public class MainActivity extends AppCompatActivity {
                     mViewPager.setCurrentItem(0);
                     return true;
                 case R.id.navigation_article:
+                    if (mViewPager.getCurrentItem() == 1) {
+                        articleContainer.smoothScrollTo(0, 0);
+                        return true;
+                    }
                     if (articleContainer.getVisibility() == View.INVISIBLE) {
                         articleContainer.setVisibility(View.VISIBLE);
                     }
                     mViewPager.setCurrentItem(1);
                     return true;
                 case R.id.navigation_question:
+                    if (mViewPager.getCurrentItem() == 2) {
+                        questionContainer.smoothScrollTo(0, 0);
+                        return true;
+                    }
                     if (mViewPager.getCurrentItem() == 0 && articleContainer.getVisibility() == View.VISIBLE) {
                         articleContainer.setVisibility(View.INVISIBLE);
                     }
