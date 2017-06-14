@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -110,13 +111,13 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean left() {
-            Log.e("test", "向左滑");
+            Toast.makeText(MainActivity.this, "常雨婧，如果你能看到", Toast.LENGTH_SHORT).show();
             return super.left();
         }
 
         @Override
         public boolean right() {
-            Log.e("test", "向右滑");
+            Toast.makeText(MainActivity.this, "我喜欢你", Toast.LENGTH_SHORT).show();
             return super.right();
         }
     }
