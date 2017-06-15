@@ -84,7 +84,7 @@ public class FragmentArticle extends BaseFragment implements ObservableScrollVie
         });
         mWebView.loadUrl("file:///android_asset/article_content.html");
         mWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        mWebView.getSettings().setJavaScriptEnabled(true);
+        //mWebView.getSettings().setJavaScriptEnabled(true);
         appearAnimation.setAnimationListener(new Animation.AnimationListener(){
 
             @Override
@@ -147,8 +147,10 @@ public class FragmentArticle extends BaseFragment implements ObservableScrollVie
             public void run() {
                 Message errorMsg = new Message();
                 errorMsg.what = 2;
+                errorMsg.obj = "网络错误";
                 String articleId = BaseData.getArticleId();
                 if (isEmpty(articleId)) {
+                    errorMsg.obj = "刚刚网络不好，试试看下拉刷新";
                     msgHandler.sendMessage(errorMsg);
                     return;
                 }
@@ -230,7 +232,7 @@ public class FragmentArticle extends BaseFragment implements ObservableScrollVie
                         fragment.handleRefreshResult(msg);
                         break;
                     case 2:
-                        fragment.handleNetRequestError();
+                        fragment.handleNetRequestError(msg);
                         break;
                 }
             }
@@ -284,10 +286,10 @@ public class FragmentArticle extends BaseFragment implements ObservableScrollVie
         }
     }
 
-    public void handleNetRequestError() {
+    public void handleNetRequestError(Message msg) {
         mSwipeLayout.setRefreshing(false);
         mScrollView.startAnimation(appearAnimation);
-        Toast.makeText(getActivity(),"网络错误",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), (String)msg.obj,Toast.LENGTH_SHORT).show();
     }
 
     @Override

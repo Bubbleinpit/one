@@ -111,8 +111,10 @@ public class FragmentOne extends BaseFragment {
             public void run() {
                 Message errorMsg = new Message();
                 errorMsg.what = 2;
+                errorMsg.obj = "网络错误";
                 String pictureId = BaseData.getPictureId();
                 if (isEmpty(pictureId)) {
+                    errorMsg.obj = "刚刚网络不好，试试看下拉刷新";
                     msgHandler.sendMessage(errorMsg);
                     return;
                 }
@@ -187,7 +189,7 @@ public class FragmentOne extends BaseFragment {
                         fragment.handleRefreshResult(msg);
                         break;
                     case 2:
-                        fragment.handleNetRequestError();
+                        fragment.handleNetRequestError(msg);
                         break;
                 }
             }
@@ -231,10 +233,10 @@ public class FragmentOne extends BaseFragment {
         }
     }
 
-    public void handleNetRequestError() {
+    public void handleNetRequestError(Message msg) {
         mSwipeLayout.setRefreshing(false);
         mScrollView.startAnimation(appearAnimation);
-        Toast.makeText(getActivity(),"网络错误",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), (String)msg.obj, Toast.LENGTH_SHORT).show();
     }
 
     @Override

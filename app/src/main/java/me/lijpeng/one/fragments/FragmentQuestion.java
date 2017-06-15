@@ -7,6 +7,7 @@ import android.os.Message;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -85,7 +86,7 @@ public class FragmentQuestion extends BaseFragment implements ObservableScrollVi
         });
         mWebView.loadUrl("file:///android_asset/answer_content.html");
         mWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        mWebView.getSettings().setJavaScriptEnabled(true);
+        //mWebView.getSettings().setJavaScriptEnabled(true);
 
         appearAnimation.setAnimationListener(new Animation.AnimationListener(){
 
@@ -139,8 +140,10 @@ public class FragmentQuestion extends BaseFragment implements ObservableScrollVi
             public void run() {
                 Message errorMsg = new Message();
                 errorMsg.what = 2;
+                errorMsg.obj = "网络错误";
                 String questionID = BaseData.getQuestionID();
                 if (isEmpty(questionID)) {
+                    errorMsg.obj = "刚刚网络不好，试试看下拉刷新";
                     msgHandler.sendMessage(errorMsg);
                     return;
                 }
@@ -257,7 +260,7 @@ public class FragmentQuestion extends BaseFragment implements ObservableScrollVi
                         fragment.handleRefreshResult(msg);
                         break;
                     case 2:
-                        fragment.handleNetRequestError();
+                        fragment.handleNetRequestError(msg);
                         break;
                 }
             }
@@ -301,10 +304,10 @@ public class FragmentQuestion extends BaseFragment implements ObservableScrollVi
         }
     }
 
-    public void handleNetRequestError() {
+    public void handleNetRequestError(Message msg) {
         mSwipeLayout.setRefreshing(false);
         mScrollView.startAnimation(appearAnimation);
-        Toast.makeText(getActivity(),"网络错误",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), (String)msg.obj,Toast.LENGTH_SHORT).show();
     }
 
     private boolean barIsGone = false;
