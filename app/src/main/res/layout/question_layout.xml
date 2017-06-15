@@ -25,7 +25,8 @@
                 android:gravity="start"
                 android:textSize="26sp"
                 android:textColor="@android:color/black"
-                android:lineSpacingMultiplier="1.2"/>
+                android:lineSpacingMultiplier="1.2"
+                android:text="@string/questionTitle"/>
             <RelativeLayout
                 android:id="@+id/layout_asker"
                 android:layout_width="match_parent"
@@ -45,7 +46,8 @@
                     android:layout_toLeftOf="@+id/iv_asker_head"
                     android:layout_marginRight="8dp"
                     android:textSize="16sp"
-                    android:textColor="@color/colorPrimary" />
+                    android:textColor="@color/colorPrimary"
+                    android:text="@string/asker"/>
                 <me.lijpeng.one.customview.circleimageview.CircleImageView
                     android:id="@+id/iv_asker_head"
                     android:layout_width="24dp"
@@ -54,6 +56,7 @@
                     android:layout_centerVertical="true"
                     app:border_width="0dp"
                     app:border_color="@android:color/transparent"
+                    android:src="@mipmap/asker_head"
                     android:scaleType="centerCrop"/>
             </RelativeLayout>
             <TextView
@@ -66,12 +69,13 @@
                 android:textSize="14sp"
                 android:textColor="#444444"
                 android:fontFamily="sans-serif-light"
+                android:text="@string/questionContent"
                 android:gravity="start"/>
 
             <View
                 android:id="@+id/cut_line"
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="1.5dp"
                 android:layout_below="@+id/tv_question_content"
                 android:layout_marginTop="50dp"
                 android:background="#77777777"/>
@@ -83,9 +87,10 @@
                 android:layout_marginTop="50dp"
                 android:layout_below="@+id/cut_line">
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="46dp"
+                    android:layout_height="46dp"
                     android:layout_alignParentStart="true"
+                    android:layout_marginStart="2dp"
                     android:src="@drawable/ic_chat_bubble_color_24dp"/>
                 <TextView
                     android:id="@+id/tv_answerer_name"
@@ -95,7 +100,8 @@
                     android:layout_toLeftOf="@+id/iv_answerer_head"
                     android:layout_marginRight="8dp"
                     android:textSize="16sp"
-                    android:textColor="@color/colorPrimary" />
+                    android:textColor="@color/colorPrimary"
+                    android:text="@string/answerer"/>
                 <me.lijpeng.one.customview.circleimageview.CircleImageView
                     android:id="@+id/iv_answerer_head"
                     android:layout_width="24dp"
@@ -104,7 +110,8 @@
                     android:layout_centerVertical="true"
                     app:border_width="0dp"
                     app:border_color="@android:color/transparent"
-                    android:scaleType="centerCrop"/>
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/answerer_head"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/layout_question_webView"
@@ -127,13 +134,14 @@
             </RelativeLayout>
             <TextView
                 android:id="@+id/tv_question_editor_info"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:layout_below="@+id/layout_question_webView"
                 android:layout_marginTop="40dp"
                 android:textStyle="italic"
-                android:fontFamily="sans-serif-light"/>
+                android:fontFamily="sans-serif-light"
+                android:text="@string/questionEditorInfo"/>
         </RelativeLayout>
     </me.lijpeng.one.customview.scrollview.ObservableScrollView>
 </android.support.v4.widget.SwipeRefreshLayout>

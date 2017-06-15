@@ -1,0 +1,54 @@
+body {
+    font-size:16px;
+    color: #333;
+    line-height:32px;
+    margin:0px;
+    padding:0px;
+    font-family: "PingFangSC-Light",sans-serif;
+
+}
+
+strong {
+    color: #000000;
+}
+.text-content .fr-temp-div img,.text-content .one-img-container img,.one-img-container img,.one-gif-box img,.fr-temp-div img,.one-gif-box img{
+    margin: 0 0;
+}
+
+h1{font-size: 20px;line-height: 30px;font-weight:normal;}
+h2{font-size: 18px;line-height: 28px;font-weight:normal;}
+p.fr-ft-ns, li.fr-ft-ns, td.fr-ft-ns { font-size: 14px }
+p.fr-ft-tip, li.fr-ft-tip, td.fr-ft-tip { font-size: 12px;}
+p.fr-ft-ns { line-height: 2; }
+p.fr-ft-tip { line-height: 1.5; }
+.clearfix::after {clear: both;display: block;content: "";height: 0;}
+p strong { color: inherit; }
+a{text-decoration: underline;color:#1F58A0; }
+p{font-size: 16px;margin: 0 0 20px 0;line-height:32px; }
+
+.ui-overlay-a, .ui-page-theme-a, .ui-page-theme-a .ui-panel-wrapper{text-shadow: none !important;}
+.text-content{padding: 0 20px;}
+.text-content p{margin: 0 0 20px 0;}
+.text-content p,.one-webview p{text-align: justify;}
+table{margin-bottom: 20px;border-spacing:0;}
+table td,table th{border: 0 !important;}
+table td{vertical-align: top;}
+table td img{margin: 0;}
+table td .one-image-note{margin: 0;}
+em{color: #222;}
+
+.one-night-mode{background-color: #4a4a4a !important;color: #eee;}
+.one-night-mode .sort-separate-line,.one-night-mode strong,.one-night-mode em,.one-night-mode h2,.one-night-mode span,.one-night-mode div,.one-night-mode i,.one-night-mode b,.one-night-mode .text-detail p{color: #d9d9d9;text-shadow:none !important;}
+.one-night-mode hr{border-color: #eee;}
+.one-night-mode p strong { color: inherit; }
+
+.one-night-mode .footer a{color: #333;}
+.one-night-mode .one-image-note{color: #eee;text-shadow:none !important;}
+.one-night-mode .one-quote-warp p,.one-night-mode .page-summary,.one-night-mode .text-editor{color: #eee !important;}
+.one-night-mode p a {color:#94C0EB !important;}
+.one-night-mode .header i{color:#333 !important;}
+.one-webview .one-image-note-text {margin-top:-26px;}
+.one-webview table .one-image-note-text{margin-top:-15px;line-height: 16px;}
+.one-webview .one-image-note{margin-top: 6px;margin-bottom: 10px;}
+.one-webview table .one-image-note{margin-top: 10px;margin-bottom: 6px;}
+.one-webview > p:last-of-type,.one-night-mode > p:last-of-type{margin-bottom: 0;}

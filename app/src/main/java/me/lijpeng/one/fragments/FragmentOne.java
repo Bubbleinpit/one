@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -40,7 +41,12 @@ public class FragmentOne extends BaseFragment {
     protected void initView() {
         mSwipeLayout = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_one_container);
         mScrollView = (ScrollView) mView.findViewById(R.id.scroll_one_container);
-        mSwipeLayout.setProgressViewOffset(false, 30, 128); //下移下拉刷新加载小圆圈的位置
+        int height = 0;
+        TypedValue typedValue = new TypedValue();
+        if (getContext().getTheme().resolveAttribute(R.attr.actionBarSize, typedValue, true)) {
+            height = TypedValue.complexToDimensionPixelSize(typedValue.data,getResources().getDisplayMetrics());
+        }
+        mSwipeLayout.setProgressViewOffset(false, height - (int) (40 * getResources().getDisplayMetrics().density), height + (int) (64 * getResources().getDisplayMetrics().density)); //下移下拉刷新加载圈的位置
         mSwipeLayout.setOnRefreshListener(this);
         mSwipeLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeLayout.setRefreshing(true);
@@ -216,11 +222,11 @@ public class FragmentOne extends BaseFragment {
         if ((int)msg.obj < 0) {
             Toast.makeText(getActivity(), "网络错误", Toast.LENGTH_SHORT).show();
             mSwipeLayout.setRefreshing(false);
-            mScrollView.startAnimation(appearAnimation);
+            //mScrollView.startAnimation(appearAnimation);
         }else {
             if (!prepareGetData(true)) {
                 mSwipeLayout.setRefreshing(false);
-                mScrollView.startAnimation(appearAnimation);
+                //mScrollView.startAnimation(appearAnimation);
             }//获取失败得让界面显示回来
         }
     }
@@ -233,7 +239,7 @@ public class FragmentOne extends BaseFragment {
 
     @Override
     public void onRefresh() {
-        mScrollView.startAnimation(disappearAnimation);
+        //mScrollView.startAnimation(disappearAnimation);
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {

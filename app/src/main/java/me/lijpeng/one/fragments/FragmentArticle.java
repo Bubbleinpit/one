@@ -7,6 +7,7 @@ import android.os.Message;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
@@ -56,7 +57,12 @@ public class FragmentArticle extends BaseFragment implements ObservableScrollVie
         mToolbar = (Toolbar) getActivity().findViewById(R.id.one_toolbar);
         mNavigationBar = (BottomNavigationView) getActivity().findViewById(R.id.navigation_bar);
         mScrollView.setScrollViewListener(this);
-        mSwipeLayout.setProgressViewOffset(false, 30, 128); //下移下拉刷新加载圈的位置
+        int height = 0;
+        TypedValue typedValue = new TypedValue();
+        if (getContext().getTheme().resolveAttribute(R.attr.actionBarSize, typedValue, true)) {
+            height = TypedValue.complexToDimensionPixelSize(typedValue.data,getResources().getDisplayMetrics());
+        }
+        mSwipeLayout.setProgressViewOffset(false, height - (int) (40 * getResources().getDisplayMetrics().density), height + (int) (64 * getResources().getDisplayMetrics().density)); //下移下拉刷新加载圈的位置
         mSwipeLayout.setOnRefreshListener(this);
         mSwipeLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeLayout.setRefreshing(true);
@@ -66,14 +72,19 @@ public class FragmentArticle extends BaseFragment implements ObservableScrollVie
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
                 mProgressBar.setVisibility(View.VISIBLE);//显示进度条
+                mWebView.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 mProgressBar.setVisibility(View.INVISIBLE);//隐藏进度条
+                mWebView.setVisibility(View.VISIBLE);
             }
         });
+        mWebView.loadUrl("file:///android_asset/article_content.html");
+        mWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        mWebView.getSettings().setJavaScriptEnabled(true);
         appearAnimation.setAnimationListener(new Animation.AnimationListener(){
 
             @Override
@@ -230,9 +241,8 @@ public class FragmentArticle extends BaseFragment implements ObservableScrollVie
 
     public void setArticleUi(Message msg) {
         ArticleContent articleContent = (ArticleContent) msg.obj;
+        System.out.println("-------------------------------------------测试输出 网页内容：" + articleContent.getArticleContent());
         mWebView.loadData(articleContent.getArticleContent(), "text/html; charset=UTF-8", null);
-        mWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        mWebView.getSettings().setJavaScriptEnabled(true);
 
         TextView mGuideWord = (TextView) mView.findViewById(R.id.tv_guide_word);
         TextView mArticleTitle = (TextView) mView.findViewById(R.id.tv_title);
@@ -276,12 +286,13 @@ public class FragmentArticle extends BaseFragment implements ObservableScrollVie
 
     public void handleNetRequestError() {
         mSwipeLayout.setRefreshing(false);
+        mScrollView.startAnimation(appearAnimation);
         Toast.makeText(getActivity(),"网络错误",Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRefresh() {
-        mScrollView.startAnimation(disappearAnimation);
+        //mScrollView.startAnimation(disappearAnimation);
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {

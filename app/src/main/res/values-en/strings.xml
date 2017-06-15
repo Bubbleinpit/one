@@ -11,4 +11,14 @@
     <string name="date_day">01</string>
     <string name="date_month_and_year">Jan.1900</string>
     <string name="author_text">Author\n━━━━</string>
+    <string name="questionTitle">李继鹏！</string>
+    <string name="questionContent">整天写这些没用的app有意思吗！</string>
+    <string name="answerer">李继鹏</string>
+    <string name="asker">想你了</string>
+    <string name="questionEditorInfo">活着就是要不断去体验的啊</string>
+    <string name="guideWord">只为吻你才低头</string>
+    <string name="articleSubTitle">━━━━</string>
+    <string name="articleAuthorTop">文/李继鹏</string>
+    <string name="articleAuthorInfo">远方是他人的近处</string>
+    <string name="articleCopyright">大一，写在下晚自习回宿舍的路上</string>
 </resources>
