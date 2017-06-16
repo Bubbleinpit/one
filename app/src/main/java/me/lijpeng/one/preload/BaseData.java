@@ -45,7 +45,7 @@ public class BaseData {
 
     public static int getBaseData() {
         Request getTodayContent = new Request.Builder()
-                .url("http://m.wufazhuce.com")
+                .url("http://m.wufazhuce.com/index")
                 .get()
                 .build();
         Response response;
@@ -61,7 +61,7 @@ public class BaseData {
         if (!parse.title().contains("「ONE · 一个」"))
             return -1;
         pictureId = parse.select("a[class=div-link][href^=http://m.wufazhuce.com/one/]").get(0).attr("href").trim().substring(27);
-        articleId = parse.select("a[class=div-link][href^=http://m.wufazhuce.com/article/]").get(0).attr("href").trim().substring(31);
+        articleId = parse.select("a[class=div-link][href^=http://m.wufazhuce.com/article/]").get(1).attr("href").trim().substring(31);
         questionID = parse.select("a[class=div-link][href^=http://m.wufazhuce.com/question/]").get(0).attr("href").trim().substring(32);
         return 0;
     }
