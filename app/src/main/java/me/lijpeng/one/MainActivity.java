@@ -110,13 +110,13 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean left() {
-            Toast.makeText(getApplicationContext(), "献给小吴同志", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "时间有限", Toast.LENGTH_SHORT).show();
             return super.left();
         }
 
         @Override
         public boolean right() {
-            Toast.makeText(getApplicationContext(), "顺你所爱", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "好好感受", Toast.LENGTH_SHORT).show();
             return super.right();
         }
     }
